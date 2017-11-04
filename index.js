@@ -18,7 +18,7 @@ function startGame() {
 			app = new game(level);
 			app.startGame();
 			userGuess();
-		})
+		});
 }
 
 function userGuess() {
@@ -27,24 +27,46 @@ function userGuess() {
 			{
 				type: "input",
 				name: "answer",
-				message: "Guess a letter!",
+				message: "Guess a letter! Tries remaining: " + app.guesses,
 				validate: validateFormat
 			}
 		])
 		.then(answer => {
 			app.checkAnswer(answer);
 			ui.log.write(app.word.wordText);
+			console.log(app.displayMessage);
 			if(app.isPlaying) {
 				userGuess();
 			}
-		})
+			else if (app.isPlaying === false)
+				restartGame();
+		});
 }
 
 function validateFormat (input) {
 	if(input.length === 1)
 		return true;
 	else
-		return 'You can only enter one letter at a time';
+		return 'You can only enter one character at a time';
+}
+
+function restartGame() {
+	inquirer
+		.prompt([
+			{
+				type: 'input',
+				name: 'restart',
+				message: 'You ran out of tries!  Would you like to try again? (y/n)'	
+			}
+		])
+		.then(answer => {
+			if(answer.restart === 'y')
+				startGame();
+			else {
+				console.log('Thanks for playing!');
+				process.exit();
+			}
+		})
 }
 
 startGame();
