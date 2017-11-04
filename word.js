@@ -4,6 +4,7 @@ const randomWords = require('random-words');
 function Word() {
 	this.word = [];
 	this.letters = [];
+	this.wordText = '';
 };
 
 Word.prototype.generateWords = function() {
@@ -15,11 +16,18 @@ Word.prototype.createLetters = function() {
 		let newLetter = new letter(l);
 		this.letters.push(newLetter);
 	}.bind(this));
+	this.stringLetters();
 };
 
 Word.prototype.generateData = function() {
 	this.generateWords();
 	this.createLetters();
-}
+};
+
+Word.prototype.stringLetters = function() {
+	this.wordText = this.letters.map(function(letter) {
+		return letter.display;
+	}).join(' ');
+};
 
 module.exports = Word;

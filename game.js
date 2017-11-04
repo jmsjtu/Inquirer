@@ -17,16 +17,18 @@ Game.prototype.endGame = function() {
 
 Game.prototype.gameOverCheck = function() {
 	if(this.guesses <= 0)
-		this.isPlaying = false;
+		this.endGame();
 }
 
 Game.prototype.checkAnswer = function(answer) {
 	if(this.isPlaying === true) {
-		// gameOverCheck();
+		this.gameOverCheck();
 		this.guesses--;
-		this.word.letters.filter(function(letter){
-			return letter.letter === answer;
+		this.word.letters.forEach(function(letter){
+			if (letter.letter.indexOf(answer.answer) !== -1) 
+				letter.reveal();
 		});
+		this.word.stringLetters();
 	};
 };
 
